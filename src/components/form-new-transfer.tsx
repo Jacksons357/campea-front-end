@@ -86,6 +86,8 @@ export function FormNewTransfer() {
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    await new Promise(resolve => setTimeout(resolve, 1500))
+
     mutation.mutate(values)
   }
 

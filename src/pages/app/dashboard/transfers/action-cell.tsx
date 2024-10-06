@@ -2,6 +2,8 @@ import { deleteTransfer, updateTransferStatus } from '@/lib/transfers'
 import { FaTrash } from 'react-icons/fa'
 import { useMutation, useQueryClient } from 'react-query'
 import { RiFileTransferFill } from 'react-icons/ri'
+import { OpenModalConfirm } from '@/components/open-modal-confirm'
+import { useState } from 'react'
 
 interface ActionCellProps {
   id: string
@@ -9,6 +11,7 @@ interface ActionCellProps {
 }
 
 export function ActionCell({ id, status }: ActionCellProps) {
+  const [openModal, setOpenModal] = useState(false)
   const queryClient = useQueryClient()
 
   const { mutate: updateStatusMutate } = useMutation({
@@ -29,15 +32,27 @@ export function ActionCell({ id, status }: ActionCellProps) {
     },
   })
 
+  function handleDelete() {
+    deleteTransferMutate(id)
+    setOpenModal(false)
+  }
+
   return (
     <div className="flex gap-5">
       <button
         type="button"
-        onClick={() => deleteTransferMutate(id)}
+        onClick={() => setOpenModal(true)}
         className="text-red-500 hover:text-red-400 transition-all"
       >
         <FaTrash size={25} />
       </button>
+
+      <OpenModalConfirm
+        setOpenModal={setOpenModal}
+        handleDelete={handleDelete}
+        openModal={openModal}
+      />
+
       <button
         type="button"
         onClick={() => updateStatusMutate(id)}
