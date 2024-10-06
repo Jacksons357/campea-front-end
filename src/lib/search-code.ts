@@ -13,12 +13,9 @@ export async function searchCode(value: string) {
       headers,
     })
 
-    // tempo para buscar o dado
-    new Promise(resolve => setTimeout(resolve, 3000))
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
     const productName = await response.data.description
-
-    console.log(productName)
 
     return productName
   } catch (error) {

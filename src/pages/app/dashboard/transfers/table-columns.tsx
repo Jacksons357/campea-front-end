@@ -1,6 +1,7 @@
 import type { transferSchema } from '@/@types/transfer-schema'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { z } from 'zod'
+import { ActionCell } from './action-cell'
 
 type Transfer = z.infer<typeof transferSchema>
 
@@ -32,9 +33,21 @@ export const TableColumns: ColumnDef<Transfer>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
+    cell: ({ row }) => (
+      <span
+        className={
+          row.original.status === 'sent' ? 'text-green-500' : 'text-yellow-500'
+        }
+      >
+        {row.original.status === 'sent' ? 'Enviado' : 'Pendente'}
+      </span>
+    ),
   },
   {
-    accessorKey: 'orders',
-    header: 'Orders',
+    accessorKey: 'actions',
+    header: 'Ações',
+    cell: ({ row }) => (
+      <ActionCell status={row.original.status} id={row.original.id} />
+    ),
   },
 ]

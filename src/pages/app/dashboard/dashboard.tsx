@@ -6,7 +6,7 @@ export function Dashboard() {
     <>
       <Helmet title="Nova transferência" />
       <div className="">
-        <h1 className="text-2xl">Adicionar nova transferencia</h1>
+        <h1 className="text-2xl">Adicionar uma nova transferencia</h1>
         <FormNewTransfer />
       </div>
     </>

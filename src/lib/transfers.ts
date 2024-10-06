@@ -13,9 +13,22 @@ export async function getTransfers(): Promise<Transfer[]> {
 }
 
 export async function newTransfer(values: z.infer<typeof formSchema>) {
-  console.log('values: ', values)
-  console.log('Transfer URL:', env.TRANSFERS_URL)
   const response = await axios.post(`${env.TRANSFERS_URL}/transfers`, values)
 
   return response.data
+}
+
+export async function updateTransferStatus(
+  id: string,
+  status: 'pending' | 'sent'
+) {
+  const response = await axios.patch(`${env.TRANSFERS_URL}/transfer/${id}`, {
+    status,
+  })
+
+  return response.data
+}
+
+export async function deleteTransfer(id: string): Promise<void> {
+  await axios.delete(`${env.TRANSFERS_URL}/transfer/${id}`)
 }

@@ -16,6 +16,7 @@ import { useMutation } from 'react-query'
 import { newTransfer } from '@/lib/transfers'
 import { useState } from 'react'
 import { searchCode } from '@/lib/search-code'
+import { toast } from 'sonner'
 
 type FieldNames =
   | 'code'
@@ -34,11 +35,15 @@ const fields: { name: FieldNames; label: string; description: string }[] = [
   {
     name: 'product',
     label: 'Produto',
-    description: 'Digite o nome do produto',
+    description: 'Carregando...',
   },
   { name: 'quantity', label: 'Quantidade', description: 'Digite a quantidade' },
-  { name: 'lote', label: 'Lote', description: 'Digite o lote' },
-  { name: 'validate', label: 'Validade', description: 'Digite a validade' },
+  { name: 'lote', label: 'Lote (opcional)', description: 'Digite o lote' },
+  {
+    name: 'validate',
+    label: 'Validade (opcional)',
+    description: 'Digite a validade',
+  },
   { name: 'destination', label: 'Destino', description: 'Digite o destino' },
 ]
 
@@ -47,6 +52,7 @@ export function FormNewTransfer() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    mode: 'onChange',
     defaultValues: {
       code: '',
       quantity: '',
@@ -57,21 +63,10 @@ export function FormNewTransfer() {
     },
   })
 
-  async function handleCodeChange(value: string) {
-    if (value) {
-      const product = await searchCode(value)
-      setProductName(product)
-      form.setValue('product', product)
-    }
-
-    setProductName('')
-    form.setValue('product', '')
-  }
-
   const mutation = useMutation(newTransfer, {
     onSuccess: () => {
-      console.log('transferencia realizada')
-      // form.reset()
+      toast('Transferência criada com sucesso!')
+      form.reset()
       setProductName('')
     },
     onError: error => {
@@ -79,14 +74,27 @@ export function FormNewTransfer() {
     },
   })
 
+  async function handleCodeChange(value: string) {
+    if (value) {
+      const product = await searchCode(value)
+      setProductName(product)
+      form.setValue('product', product)
+    } else {
+      setProductName('')
+      form.setValue('product', '')
+    }
+  }
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('submiting values: ', values)
     mutation.mutate(values)
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-[300px]">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-[300px] space-y-4 mt-5"
+      >
         {fields.map(({ name, label, description }) => (
           <FormField
             key={name}
@@ -97,7 +105,7 @@ export function FormNewTransfer() {
                 <FormLabel>{label}</FormLabel>
                 <FormControl>
                   <Input
-                    // disabled={name === 'product' ? true : false}
+                    disabled={name === 'product'}
                     {...field}
                     placeholder={description}
                     onChange={e => {
@@ -114,7 +122,9 @@ export function FormNewTransfer() {
             )}
           />
         ))}
-        <Button type="submit">Enviar transferência</Button>
+        <Button type="submit" disabled={!form.formState.isValid}>
+          Enviar transferência
+        </Button>
       </form>
     </Form>
   )
