@@ -1,7 +1,9 @@
 import { FormNewTransfer } from '@/components/form-new-transfer'
+import { getUsers } from '@/lib/transfers'
 import { Helmet } from 'react-helmet-async'
 
 export function Dashboard() {
+  getUsers()
   return (
     <>
       <Helmet title="Nova transferência" />

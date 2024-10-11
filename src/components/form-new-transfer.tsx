@@ -49,6 +49,7 @@ const fields: { name: FieldNames; label: string; description: string }[] = [
 
 export function FormNewTransfer() {
   const [productName, setProductName] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,13 +65,18 @@ export function FormNewTransfer() {
   })
 
   const mutation = useMutation(newTransfer, {
+    onMutate: () => {
+      setIsLoading(true)
+    },
     onSuccess: () => {
       toast('Transferência criada com sucesso!')
       form.reset()
       setProductName('')
+      setIsLoading(false)
     },
     onError: error => {
       console.error('Erro ao criar transferencia: ', error)
+      setIsLoading(false)
     },
   })
 
@@ -86,9 +92,11 @@ export function FormNewTransfer() {
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    const transferData = {
+      ...values,
+    }
 
-    mutation.mutate(values)
+    mutation.mutate(transferData)
   }
 
   return (
@@ -107,8 +115,8 @@ export function FormNewTransfer() {
                 <FormLabel>{label}</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={name === 'product'}
                     {...field}
+                    disabled={name === 'product'}
                     placeholder={description}
                     onChange={e => {
                       field.onChange(e)
@@ -124,8 +132,8 @@ export function FormNewTransfer() {
             )}
           />
         ))}
-        <Button type="submit" disabled={!form.formState.isValid}>
-          Enviar transferência
+        <Button type="submit" disabled={!form.formState.isValid || isLoading}>
+          {isLoading ? 'Enviando...' : 'Enviar Transferência'}
         </Button>
       </form>
     </Form>

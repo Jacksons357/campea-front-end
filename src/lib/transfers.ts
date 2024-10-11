@@ -7,15 +7,30 @@ import type { z } from 'zod'
 type Transfer = z.infer<typeof transferSchema>
 
 export async function getTransfers(): Promise<Transfer[]> {
-  const response = await axios.get(env.TRANSFERS_URL)
+  const response = await axios.get(`${env.TRANSFERS_URL}/transfers`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
 
   return transferSchema.array().parse(response.data.transfers)
 }
 
 export async function newTransfer(values: z.infer<typeof formSchema>) {
-  const response = await axios.post(`${env.TRANSFERS_URL}/transfers`, values)
-
-  return response.data
+  try {
+    const response = await axios.post(
+      `${env.TRANSFERS_URL}/new-transfer`,
+      values,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    )
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export async function updateTransferStatus(
@@ -31,4 +46,14 @@ export async function updateTransferStatus(
 
 export async function deleteTransfer(id: string): Promise<void> {
   await axios.delete(`${env.TRANSFERS_URL}/transfer/${id}`)
+}
+
+export async function getUsers() {
+  const response = await axios.get(`${env.TRANSFERS_URL}/user`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+
+  return response.data.user.username
 }

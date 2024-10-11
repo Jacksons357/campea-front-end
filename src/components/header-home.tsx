@@ -4,7 +4,7 @@ import { ModeToggle } from './ui/mode-toggle'
 
 export function HeaderHome() {
   return (
-    <nav className="flex justify-between h-16 items-center max-w-[1200px] m-auto">
+    <nav className="flex justify-between h-16 items-center max-w-[1200px] m-auto fixed top-0 left-0 right-0 z-50">
       <Link to="/" className="hover:font-semibold transition-all">
         <span>Drogarias campeã</span>
       </Link>

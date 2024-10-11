@@ -8,6 +8,7 @@ import { AppLayout } from '@/pages/_layouts/app'
 import { Transfers } from '@/pages/app/dashboard/transfers/transfers'
 import { History } from '@/pages/app/dashboard/history/history'
 import { DashboardAdmin } from '@/pages/app/admin/dashboard-admin'
+import PrivateRoute from '@/pages/auth/private-navigation'
 
 export const router = createBrowserRouter([
   {
@@ -23,9 +24,30 @@ export const router = createBrowserRouter([
     path: '/',
     element: <AppLayout />,
     children: [
-      { path: '/dashboard', element: <Dashboard /> },
-      { path: '/dashboard/transfers', element: <Transfers /> },
-      { path: '/dashboard/history', element: <History /> },
+      {
+        path: '/dashboard',
+        element: (
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/dashboard/transfers',
+        element: (
+          <PrivateRoute>
+            <Transfers />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/dashboard/history',
+        element: (
+          <PrivateRoute>
+            <History />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
   {

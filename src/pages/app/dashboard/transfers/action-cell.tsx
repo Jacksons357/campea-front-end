@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from 'react-query'
 import { RiFileTransferFill } from 'react-icons/ri'
 import { OpenModalConfirm } from '@/components/open-modal-confirm'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 interface ActionCellProps {
   id: string
@@ -35,6 +36,7 @@ export function ActionCell({ id, status }: ActionCellProps) {
   function handleDelete() {
     deleteTransferMutate(id)
     setOpenModal(false)
+    toast('Transferencia removida com sucesso!')
   }
 
   return (

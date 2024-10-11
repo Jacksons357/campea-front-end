@@ -6,7 +6,7 @@ import { TableColumns } from './table-columns'
 export function Transfers() {
   const { transfers, isLoading, error } = useTransfers()
 
-  if (isLoading) return <div>Fetching transfers...</div>
+  if (isLoading) return <div>Carregando transferências...</div>
   if (error) return <div>{error.message}</div>
 
   return (
