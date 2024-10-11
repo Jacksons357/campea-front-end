@@ -12,7 +12,7 @@ import {
 } from './ui/form'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { newTransfer } from '@/lib/transfers'
 import { useState } from 'react'
 import { searchCode } from '@/lib/search-code'
@@ -47,9 +47,15 @@ const fields: { name: FieldNames; label: string; description: string }[] = [
   { name: 'destination', label: 'Destino', description: 'Digite o destino' },
 ]
 
-export function FormNewTransfer() {
+interface formProps {
+  setOpenModal: (open: boolean) => void
+}
+
+export function FormNewTransfer({ setOpenModal }: formProps) {
   const [productName, setProductName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+
+  const queryClient = useQueryClient()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -68,11 +74,18 @@ export function FormNewTransfer() {
     onMutate: () => {
       setIsLoading(true)
     },
-    onSuccess: () => {
-      toast('Transferência criada com sucesso!')
+    onSuccess: async () => {
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
       form.reset()
+
+      toast('Transferência criada com sucesso!')
+
+      queryClient.invalidateQueries('transfers')
+
       setProductName('')
       setIsLoading(false)
+      setOpenModal(false)
     },
     onError: error => {
       console.error('Erro ao criar transferencia: ', error)
@@ -96,6 +109,7 @@ export function FormNewTransfer() {
       ...values,
     }
 
+    setOpenModal(true)
     mutation.mutate(transferData)
   }
 
@@ -132,7 +146,11 @@ export function FormNewTransfer() {
             )}
           />
         ))}
-        <Button type="submit" disabled={!form.formState.isValid || isLoading}>
+        <Button
+          className="w-full"
+          type="submit"
+          disabled={!form.formState.isValid || isLoading}
+        >
           {isLoading ? 'Enviando...' : 'Enviar Transferência'}
         </Button>
       </form>

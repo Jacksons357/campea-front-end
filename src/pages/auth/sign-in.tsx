@@ -40,7 +40,7 @@ export function SignIn() {
     const token = localStorage.getItem('token')
 
     if (token) {
-      navigate('/dashboard')
+      navigate('/dashboard/transfers')
     }
   }, [navigate])
 
@@ -55,7 +55,7 @@ export function SignIn() {
   const mutation = useMutation(loginUser, {
     onSuccess: data => {
       localStorage.setItem('token', data)
-      navigate('/dashboard')
+      navigate('/dashboard/transfers')
     },
     onError: error => {
       console.error('Login failed: ', error)

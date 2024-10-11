@@ -1,15 +1,15 @@
 import clsx from 'clsx'
-import { FaHome } from 'react-icons/fa'
+// import { FaHome } from 'react-icons/fa'
 import { FaHistory } from 'react-icons/fa'
 import { MdOutlinePendingActions } from 'react-icons/md'
 import { useLocation } from 'react-router-dom'
 
 const links = [
-  {
-    name: 'Início',
-    href: '/dashboard',
-    icon: FaHome,
-  },
+  // {
+  //   name: 'Início',
+  //   href: '/dashboard',
+  //   icon: FaHome,
+  // },
   {
     name: 'Transferências',
     href: '/dashboard/transfers',
