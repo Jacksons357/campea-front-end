@@ -36,7 +36,9 @@ export const TableColumns: ColumnDef<Transfer>[] = [
     cell: ({ row }) => (
       <span
         className={
-          row.original.status === 'sent' ? 'text-green-500' : 'text-yellow-500'
+          row.original.status === 'sent'
+            ? 'text-green-500 font-semibold'
+            : 'text-yellow-500 font-semibold'
         }
       >
         {row.original.status === 'sent' ? 'Enviado' : 'Pendente'}

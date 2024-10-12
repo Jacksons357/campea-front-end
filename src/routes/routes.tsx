@@ -1,5 +1,4 @@
 import { createBrowserRouter } from 'react-router-dom'
-import { Dashboard } from '../pages/app/dashboard/dashboard'
 import { SignIn } from '../pages/auth/sign-in'
 import { HomeLayout } from '@/pages/_layouts/home'
 import { HomePage } from '@/pages/app/home'
@@ -24,14 +23,6 @@ export const router = createBrowserRouter([
     path: '/',
     element: <AppLayout />,
     children: [
-      {
-        path: '/dashboard',
-        element: (
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
-        ),
-      },
       {
         path: '/dashboard/transfers',
         element: (

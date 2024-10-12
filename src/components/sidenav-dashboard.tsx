@@ -6,8 +6,10 @@ import { ModeToggle } from './ui/mode-toggle'
 import { useNavigate } from 'react-router-dom'
 import { getUsers } from '@/lib/transfers'
 import { useQuery } from 'react-query'
+import { useState } from 'react'
 
 export function SideNavDashboard() {
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
   const { data: username } = useQuery(['user'], getUsers)
@@ -18,10 +20,13 @@ export function SideNavDashboard() {
 
   function handleLogout(event: React.FormEvent) {
     event.preventDefault()
+    setIsLoading(true)
 
-    localStorage.removeItem('token')
-
-    navigate('/sign-in')
+    setTimeout(() => {
+      localStorage.removeItem('token')
+      setIsLoading(true)
+      navigate('/sign-in')
+    }, 1500)
   }
   return (
     <div>
@@ -43,10 +48,15 @@ export function SideNavDashboard() {
           onSubmit={handleLogout}
           className="pb-2 flex items-center justify-between gap-2"
         >
-          <Button aria-label="Sair" variant="destructive" className="w-full">
+          <Button
+            aria-label="Sair"
+            variant="destructive"
+            className="w-full"
+            disabled={isLoading}
+          >
             <div className="flex items-center gap-2">
               <FaSignOutAlt />
-              Sair
+              {isLoading ? 'Saindo...' : 'Sair'}
             </div>
           </Button>
           <span>
