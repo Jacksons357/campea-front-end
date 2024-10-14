@@ -18,12 +18,14 @@ export function HeaderTransfer() {
       <h1 className="text-2xl font-semibold">Transferencias</h1>
       <Dialog open={openModal} onOpenChange={setOpenModal}>
         <DialogTrigger asChild>
-          <Button variant="default">Adicionar transferencia</Button>
+          <Button variant="default" className="dark:text-zinc-200">
+            Nova transferência
+          </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[350px]">
           <DialogHeader>
-            <DialogTitle>Dados da transferência</DialogTitle>
-            <DialogDescription>teste</DialogDescription>
+            <DialogTitle>Nova transferência</DialogTitle>
+            <DialogDescription>Preencha os campos</DialogDescription>
           </DialogHeader>
           <FormNewTransfer setOpenModal={setOpenModal} />
         </DialogContent>

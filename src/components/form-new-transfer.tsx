@@ -115,10 +115,7 @@ export function FormNewTransfer({ setOpenModal }: formProps) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-[300px] space-y-4 mt-5"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-[300px]">
         {fields.map(({ name, label, description }) => (
           <FormField
             key={name}
@@ -127,7 +124,7 @@ export function FormNewTransfer({ setOpenModal }: formProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{label}</FormLabel>
-                <FormControl>
+                <FormControl className={name === 'destination' ? 'mb-5' : ''}>
                   <Input
                     {...field}
                     disabled={name === 'product'}
@@ -147,7 +144,7 @@ export function FormNewTransfer({ setOpenModal }: formProps) {
           />
         ))}
         <Button
-          className="w-full"
+          className="w-full dark:text-zinc-200 mt-5"
           type="submit"
           disabled={!form.formState.isValid || isLoading}
         >

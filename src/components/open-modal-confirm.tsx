@@ -10,17 +10,17 @@ import {
 
 interface OpenModalConfirmProps {
   handleDelete: () => void
-  setOpenModal: (open: boolean) => void
-  openModal: boolean
+  setOpenModalDelete: (open: boolean) => void
+  openModalDelete: boolean
 }
 
 export function OpenModalConfirm({
   handleDelete,
-  setOpenModal,
-  openModal,
+  setOpenModalDelete,
+  openModalDelete,
 }: OpenModalConfirmProps) {
   return (
-    <Dialog open={openModal} onOpenChange={setOpenModal}>
+    <Dialog open={openModalDelete} onOpenChange={setOpenModalDelete}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -31,7 +31,7 @@ export function OpenModalConfirm({
           </DialogDescription>
           <div className="flex justify-end">
             <DialogFooter>
-              <button onClick={() => setOpenModal(false)} type="button">
+              <button onClick={() => setOpenModalDelete(false)} type="button">
                 Cancelar
               </button>
               <Button onClick={handleDelete} className="" variant="destructive">

@@ -5,6 +5,7 @@ import { RiFileTransferFill } from 'react-icons/ri'
 import { OpenModalConfirm } from '@/components/open-modal-confirm'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { OpenModalSendTransfer } from '@/components/open-modal-send-transfer'
 
 interface ActionCellProps {
   id: string
@@ -12,7 +13,8 @@ interface ActionCellProps {
 }
 
 export function ActionCell({ id, status }: ActionCellProps) {
-  const [openModal, setOpenModal] = useState(false)
+  const [openModalDelete, setOpenModalDelete] = useState(false)
+  const [openModalSendTransfer, setOpenModalSendTransfer] = useState(false)
   const queryClient = useQueryClient()
 
   const { mutate: updateStatusMutate } = useMutation({
@@ -33,9 +35,15 @@ export function ActionCell({ id, status }: ActionCellProps) {
     },
   })
 
+  function handleUpdating() {
+    updateStatusMutate(id)
+    setOpenModalSendTransfer(false)
+    toast('Transferencia enviada!')
+  }
+
   function handleDelete() {
     deleteTransferMutate(id)
-    setOpenModal(false)
+    setOpenModalDelete(false)
     toast('Transferencia removida com sucesso!')
   }
 
@@ -43,26 +51,32 @@ export function ActionCell({ id, status }: ActionCellProps) {
     <div className="flex gap-5">
       <button
         type="button"
-        onClick={() => setOpenModal(true)}
+        onClick={() => setOpenModalDelete(true)}
         className="text-red-500 hover:text-red-400 transition-all"
       >
         <FaTrash size={25} />
       </button>
 
       <OpenModalConfirm
-        setOpenModal={setOpenModal}
+        setOpenModalDelete={setOpenModalDelete}
         handleDelete={handleDelete}
-        openModal={openModal}
+        openModalDelete={openModalDelete}
       />
-
       <button
         type="button"
-        onClick={() => updateStatusMutate(id)}
+        onClick={() => setOpenModalSendTransfer(true)}
         disabled={status === 'sent'}
         className="text-green-500 hover:text-green-400 transition-all"
       >
         <RiFileTransferFill size={29} />
       </button>
+
+      <OpenModalSendTransfer
+        handleUpdating={handleUpdating}
+        openModalSendTransfer={openModalSendTransfer}
+        setOpenModalSendTransfer={setOpenModalSendTransfer}
+        id={id}
+      />
     </div>
   )
 }
