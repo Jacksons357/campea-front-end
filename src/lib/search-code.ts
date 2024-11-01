@@ -13,11 +13,17 @@ export async function searchCode(value: string) {
       headers,
     })
 
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise(resolve => setTimeout(resolve, 2000))
 
-    const productName = await response.data.description
+    let productName = await response.data.description
 
-    return productName
+    productName = productName.trim().replace(/\s+/g, ' ')
+
+    const words = productName.split(' ')
+
+    const firstTwoWords = words.slice(0, 3).join(' ')
+
+    return firstTwoWords
   } catch (error) {
     console.error('Erro ao buscar os dados do produto: ', error)
 
