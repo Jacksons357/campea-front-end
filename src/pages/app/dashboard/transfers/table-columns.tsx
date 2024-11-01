@@ -11,8 +11,18 @@ export const TableColumns: ColumnDef<Transfer>[] = [
     accessorKey: 'createdAt',
     header: 'Data',
     cell: ({ getValue }) => {
-      const dateValue = new Date(getValue())
-      return format(dateValue, 'dd/MM')
+      const value = getValue()
+
+      if (
+        typeof value === 'string' ||
+        typeof value === 'number' ||
+        value instanceof Date
+      ) {
+        const dateValue = new Date(value)
+        return format(dateValue, 'dd/MM')
+      }
+
+      return 'Data inválida'
     },
   },
   {
