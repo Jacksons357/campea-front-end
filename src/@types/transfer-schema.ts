@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const transferSchema = z.object({
+  createdAt: z.string(),
   id: z.string().cuid(),
   product: z.string().optional().nullable(),
   code: z.string(),
