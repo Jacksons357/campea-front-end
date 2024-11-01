@@ -13,7 +13,7 @@ export async function searchCode(value: string) {
       headers,
     })
 
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
     let productName = await response.data.description
 
@@ -21,7 +21,7 @@ export async function searchCode(value: string) {
 
     const words = productName.split(' ')
 
-    const firstTwoWords = words.slice(0, 3).join(' ')
+    const firstTwoWords = words.slice(0, 4).join(' ')
 
     return firstTwoWords
   } catch (error) {
